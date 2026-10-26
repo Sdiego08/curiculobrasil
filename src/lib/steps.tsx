@@ -105,7 +105,7 @@ function more<T extends { more?: boolean }>(id: string, title: string, list: (d:
 
 const setList = <T,>(d: State, key: "others" | "pubs" | "courses" | "langs", v: boolean, blank: () => T) => {
   if (v && (d[key] as unknown[]).length === 0) (d[key] as unknown[]).push(blank());
-  if (!v) (d[key] as unknown[]) = [];
+  if (!v) (d as unknown as Record<string, unknown[]>)[key] = [];
 };
 
 /* ---------- Experiência (formado) ---------- */
