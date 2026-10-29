@@ -33,13 +33,21 @@ jobs:
       - name: Gerar o build
         run: npm run build
 
+      # O modo SPA gera .output/public/_shell.html. O Pages precisa de index.html,
+      # e o 404.html faz recarregar uma rota interna cair no app em vez de dar erro.
+      - name: Preparar a pasta do site
+        run: |
+          cp .output/public/_shell.html .output/public/index.html
+          cp .output/public/_shell.html .output/public/404.html
+          rm -f .output/public/_headers
+
       - name: Configurar o Pages
         uses: actions/configure-pages@v5
 
-      - name: Enviar a pasta dist
+      - name: Enviar a pasta do site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./.output/public
 
   deploy:
     needs: build

@@ -7,9 +7,15 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    // GitHub Pages serves the site from /curiculobrasil/; Lovable serves it from the domain root.
+    base: process.env.GITHUB_ACTIONS ? "/curiculobrasil/" : "/",
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Emit a static SPA shell (.output/public/_shell.html) so the app can be hosted on GitHub Pages.
+    spa: { enabled: true },
   },
 });
